@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CTG Analysis Processing - CTG Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-highest": "#1f3748",
+              "on-secondary-fixed-variant": "#004f59",
+              "primary": "#a6c8ff",
+              "on-tertiary-fixed-variant": "#00504b",
+              "inverse-surface": "#cce6fb",
+              "on-error": "#690005",
+              "outline": "#8c919c",
+              "inverse-primary": "#115fac",
+              "primary-container": "#035aa7",
+              "error-container": "#93000a",
+              "on-primary": "#00315f",
+              "on-tertiary": "#003733",
+              "primary-fixed": "#d5e3ff",
+              "surface": "#001523",
+              "tertiary-fixed-dim": "#8cd3cc",
+              "on-error-container": "#ffdad6",
+              "primary-fixed-dim": "#a6c8ff",
+              "outline-variant": "#424751",
+              "on-surface": "#cce6fb",
+              "secondary-container": "#004f59",
+              "surface-dim": "#001523",
+              "secondary": "#94d0dc",
+              "surface-container": "#062232",
+              "surface-container-lowest": "#00101b",
+              "tertiary-container": "#12645e",
+              "secondary-fixed": "#b0edf9",
+              "surface-variant": "#1f3748",
+              "surface-tint": "#a6c8ff",
+              "background": "#001523",
+              "on-tertiary-fixed": "#00201e",
+              "secondary-fixed-dim": "#94d0dc",
+              "on-secondary-fixed": "#001f24",
+              "on-tertiary-container": "#96ded6",
+              "tertiary": "#8cd3cc",
+              "on-secondary-container": "#83bfca",
+              "tertiary-fixed": "#a7f0e8",
+              "surface-container-high": "#132c3d",
+              "on-primary-fixed-variant": "#004786",
+              "on-primary-fixed": "#001c3b",
+              "surface-bright": "#233c4d",
+              "surface-container-low": "#021e2d",
+              "on-secondary": "#00363d",
+              "on-surface-variant": "#c2c6d3",
+              "error": "#ffb4ab",
+              "inverse-on-surface": "#1a3343",
+              "on-primary-container": "#b8d3ff",
+              "on-background": "#cce6fb"
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px"
+            },
+            spacing: {
+              gutter: "16px",
+              md: "16px",
+              margin: "24px",
+              xl: "32px",
+              xs: "4px",
+              sm: "8px",
+              lg: "20px"
+            },
+            fontFamily: {
+              "numeric-xl": ["JetBrains Mono"],
+              "data-label": ["Inter"],
+              "numeric-sm": ["JetBrains Mono"],
+              "body-md": ["Inter"],
+              "panel-title": ["IBM Plex Sans"],
+              "headline-lg": ["IBM Plex Sans"],
+              "live-indicator": ["IBM Plex Sans"]
+            },
+            fontSize: {
+              "numeric-xl": ["28px", { lineHeight: "32px", fontWeight: "700" }],
+              "data-label": ["11px", { lineHeight: "14px", fontWeight: "500" }],
+              "numeric-sm": ["10px", { lineHeight: "12px", fontWeight: "400" }],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "panel-title": ["12px", { lineHeight: "16px", letterSpacing: "0.08em", fontWeight: "600" }],
+              "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "normal", fontWeight: "700" }],
+              "live-indicator": ["11px", { lineHeight: "11px", letterSpacing: "0.15em", fontWeight: "700" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #04344C; /* Requested Deep Teal */
+        }
+        
+        .draw-waveform {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 4s linear infinite;
+        }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .spin-slow {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(to right, #035AA7, #99E1D9);
+            width: 60%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-high dark:bg-surface-container-high border-b border-outline-variant/30 backdrop-blur-md shadow-sm fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16">
+<div class="flex items-center gap-md">
+<span class="font-headline-lg text-headline-lg text-primary-fixed-dim tracking-tight">CTG Assistant</span>
+<div class="h-6 w-[1px] bg-outline-variant/50 hidden md:block"></div>
+<nav class="hidden md:flex gap-md font-panel-title text-panel-title">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Patient List</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Protocol Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-sm">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-sm">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/50 ml-sm">
+<img alt="Dr. Clinical Lead Avatar" class="w-full h-full object-cover" data-alt="A small, professional headshot of Dr. Clinical Lead, wearing a white coat, set against a neutral gray background in a well-lit studio. Professional lighting and sharp focus. The style is clean, modern, and clinical." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAWXT0snK3r6YaBSfXAmBXKNwDvsY5E0kOG8-0G8GUcyGqEtanuMNRpkRAFJnuBNDT7hejOxr2UL0CXWGYqq_tnA3N4bigwYGz9G_kaAZKIhjtgA_jVZn3ynmDONVpdaq64aRE8a_SKYRFaRmbptDc_u6N6txtvkzpXvCiGEW_cmFZhF62swQO5QF1H95DW2FLGVpNp9QtZJOSfKWHEwLRWYHpMD0KttnsQIQDE8ibGOGRb50JHaopwQ"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex items-center justify-center pt-24 pb-12 px-gutter">
+<div class="w-full max-w-[680px] bg-surface-container/50 backdrop-blur-xl border border-[rgba(176,237,249,0.15)] rounded-xl p-margin shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex flex-col items-center">
+<!-- 1. Animated Waveform Icon -->
+<div class="mb-6 fade-in-up" style="animation-delay: 0.1s;">
+<svg fill="none" height="60" viewbox="0 0 200 60" width="200" xmlns="http://www.w3.org/2000/svg">
+<path class="draw-waveform" d="M0 30 L20 30 L30 10 L40 50 L50 30 L70 30 L80 15 L90 45 L100 30 L120 30 L130 5 L140 55 L150 30 L170 30 L180 20 L190 40 L200 30" stroke="#B0EDF9" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+</svg>
+</div>
+<!-- 2. Heading -->
+<h1 class="text-[26px] leading-[32px] font-semibold text-[#F0F4F8] mb-2 font-['IBM_Plex_Sans'] fade-in-up" style="animation-delay: 0.2s;">
+                Analyzing CTG Recording...
+            </h1>
+<!-- 3. File Info -->
+<p class="text-[14px] text-[#8BA4B8] mb-8 font-['Inter'] fade-in-up" style="animation-delay: 0.3s;">
+                ctg_recording_2024_01_15.dat + .hea (12.4 MB)
+            </p>
+<!-- 4. Processing Steps List -->
+<div class="w-full bg-surface-container-lowest/80 rounded-lg p-md mb-8 border border-outline-variant/20 fade-in-up" style="animation-delay: 0.4s;">
+<!-- Completed Steps -->
+<div class="flex items-start gap-sm mb-3">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-[2px]" data-icon="check_circle">check_circle</span>
+<div class="flex-grow flex justify-between items-center">
+<span class="text-on-surface text-body-md">File Validation &amp; Format Check</span>
+<span class="text-on-surface-variant font-numeric-sm text-numeric-sm">[0.3s]</span>
+</div>
+</div>
+<div class="flex items-start gap-sm mb-3">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-[2px]" data-icon="check_circle">check_circle</span>
+<div class="flex-grow flex justify-between items-center">
+<span class="text-on-surface text-body-md">Signal Decoding (FHR + UC channels)</span>
+<span class="text-on-surface-variant font-numeric-sm text-numeric-sm">[1.2s]</span>
+</div>
+</div>
+<div class="flex items-start gap-sm mb-3">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-[2px]" data-icon="check_circle">check_circle</span>
+<div class="flex-grow flex justify-between items-center">
+<span class="text-on-surface text-body-md">Signal Quality Assessment</span>
+<span class="text-on-surface-variant font-numeric-sm text-numeric-sm">[0.8s]</span>
+</div>
+</div>
+<!-- Active Step -->
+<div class="flex items-start gap-sm mb-2">
+<span class="material-symbols-outlined text-primary text-[20px] mt-[2px] spin-slow" data-icon="autorenew">autorenew</span>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="text-primary font-medium text-body-md">Pattern Detection Engine</span>
+<span class="text-primary/70 font-numeric-sm text-numeric-sm">[running...]</span>
+</div>
+<!-- Sub-steps -->
+<div class="ml-6 pl-3 border-l border-outline-variant/40 space-y-2 mt-2">
+<div class="flex items-center gap-xs text-on-surface-variant/80 text-[13px]">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="done">done</span> Baseline calculation
+                            </div>
+<div class="flex items-center gap-xs text-on-surface-variant/80 text-[13px]">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="done">done</span> Variability analysis
+                            </div>
+<div class="flex items-center gap-xs text-primary text-[13px]">
+<span class="material-symbols-outlined text-[16px] spin-slow" data-icon="sync">sync</span> Acceleration detection
+                            </div>
+<div class="flex items-center gap-xs text-on-surface-variant/50 text-[13px]">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> Deceleration classification
+                            </div>
+</div>
+</div>
+</div>
+<!-- Pending Steps -->
+<div class="flex items-start gap-sm mt-4 text-on-surface-variant/50">
+<span class="material-symbols-outlined text-[20px] mt-[2px]" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span class="text-body-md">Risk Score Calculation</span>
+</div>
+<div class="flex items-start gap-sm mt-3 text-on-surface-variant/50">
+<span class="material-symbols-outlined text-[20px] mt-[2px]" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span class="text-body-md">AI Explanation Generation</span>
+</div>
+<div class="flex items-start gap-sm mt-3 text-on-surface-variant/50">
+<span class="material-symbols-outlined text-[20px] mt-[2px]" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span class="text-body-md">Report Preparation</span>
+</div>
+</div>
+<!-- 5. Progress Bar -->
+<div class="w-full mb-6 fade-in-up" style="animation-delay: 0.5s;">
+<div class="flex justify-between items-end mb-2">
+<span class="font-data-label text-data-label text-on-surface-variant uppercase tracking-wider">Overall Progress</span>
+<span class="text-[12px] text-primary/80">60%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full progress-bar-fill rounded-full"></div>
+</div>
+<p class="text-center text-[13px] text-secondary-fixed-dim mt-3 font-medium">
+                    Estimated time remaining: ~18 seconds
+                </p>
+</div>
+<!-- 6. Info Box -->
+<div class="w-full bg-surface-container/40 rounded-lg p-sm flex items-start gap-sm mb-6 border border-outline-variant/10 fade-in-up" style="animation-delay: 0.6s;">
+<span class="material-symbols-outlined text-outline text-[18px] mt-[2px]" data-icon="info">info</span>
+<p class="text-[12px] text-outline leading-tight">
+                    All processing occurs locally on the hospital network. No patient data is transmitted externally during this step.
+                </p>
+</div>
+<!-- 7. Cancel Link -->
+<div class="fade-in-up" style="animation-delay: 0.7s;">
+<button class="text-[13px] text-on-surface-variant hover:text-error transition-colors underline decoration-on-surface-variant/30 hover:decoration-error/50 underline-offset-4 cursor-pointer">
+                    Cancel Processing
+                </button>
+</div>
+</div>
+</main>
+</body></html>

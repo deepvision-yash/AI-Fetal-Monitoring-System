@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CTG Assistant - Offline Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#8cd3cc",
+                        "outline": "#8c919c",
+                        "surface": "#001523",
+                        "on-primary-container": "#b8d3ff",
+                        "tertiary": "#8cd3cc",
+                        "secondary-fixed": "#b0edf9",
+                        "on-surface": "#cce6fb",
+                        "surface-container-high": "#132c3d",
+                        "tertiary-container": "#12645e",
+                        "surface-dim": "#001523",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#1f3748",
+                        "inverse-on-surface": "#1a3343",
+                        "surface-tint": "#a6c8ff",
+                        "on-secondary-fixed-variant": "#004f59",
+                        "on-primary-fixed": "#001c3b",
+                        "on-secondary": "#00363d",
+                        "secondary-container": "#004f59",
+                        "tertiary-fixed": "#a7f0e8",
+                        "on-secondary-container": "#83bfca",
+                        "secondary-fixed-dim": "#94d0dc",
+                        "on-secondary-fixed": "#001f24",
+                        "surface-variant": "#1f3748",
+                        "background": "#001523",
+                        "on-tertiary-fixed-variant": "#00504b",
+                        "on-background": "#cce6fb",
+                        "on-tertiary-container": "#96ded6",
+                        "surface-container-low": "#021e2d",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#003733",
+                        "on-primary-fixed-variant": "#004786",
+                        "primary-fixed-dim": "#a6c8ff",
+                        "on-tertiary-fixed": "#00201e",
+                        "inverse-surface": "#cce6fb",
+                        "on-surface-variant": "#c2c6d3",
+                        "on-error": "#690005",
+                        "outline-variant": "#424751",
+                        "primary": "#a6c8ff",
+                        "secondary": "#94d0dc",
+                        "surface-bright": "#233c4d",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#00101b",
+                        "inverse-primary": "#115fac",
+                        "primary-fixed": "#d5e3ff",
+                        "primary-container": "#035aa7",
+                        "surface-container": "#062232",
+                        "on-primary": "#00315f"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "lg": "20px",
+                        "gutter": "16px",
+                        "margin": "24px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "xl": "32px"
+                    },
+                    fontFamily: {
+                        "numeric-sm": ["JetBrains Mono"],
+                        "live-indicator": ["IBM Plex Sans"],
+                        "numeric-xl": ["JetBrains Mono"],
+                        "headline-lg": ["IBM Plex Sans"],
+                        "data-label": ["Inter"],
+                        "body-md": ["Inter"],
+                        "panel-title": ["IBM Plex Sans"]
+                    },
+                    fontSize: {
+                        "numeric-sm": ["10px", { lineHeight: "12px", fontWeight: "400" }],
+                        "live-indicator": ["11px", { lineHeight: "11px", letterSpacing: "0.15em", fontWeight: "700" }],
+                        "numeric-xl": ["28px", { lineHeight: "32px", fontWeight: "700" }],
+                        "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "normal", fontWeight: "700" }],
+                        "data-label": ["11px", { lineHeight: "14px", fontWeight: "500" }],
+                        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "panel-title": ["12px", { lineHeight: "16px", letterSpacing: "0.08em", fontWeight: "600" }]
+                    },
+                    backgroundImage: {
+                        'dot-grid': 'radial-gradient(circle, rgba(140, 145, 156, 0.1) 1px, transparent 1px)'
+                    },
+                    backgroundSize: {
+                        'dots': '24px 24px'
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #04344C;
+        }
+        .bg-dots {
+            background-image: radial-gradient(circle, rgba(140, 145, 156, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .card-border {
+            border: 1px solid rgba(176,237,249,0.15);
+        }
+        .glass-panel {
+            background-color: rgba(0, 21, 35, 0.6);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="text-on-surface bg-dots min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-high dark:bg-surface-container-high shadow-sm border-b border-outline-variant/30 backdrop-blur-md fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16">
+<div class="flex items-center gap-margin">
+<span class="font-headline-lg text-headline-lg text-primary-fixed-dim tracking-tight">CTG Assistant</span>
+<nav class="hidden md:flex gap-lg ml-xl">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Patient List</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Protocol Library</a>
+<!-- Offline Analysis is active -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1 cursor-pointer active:opacity-80" href="#">Offline Analysis</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative w-64 mr-md hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="w-full bg-surface-container-highest border border-outline-variant/50 rounded-full py-1.5 pl-10 pr-4 text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary/50 outline-none transition-all placeholder:text-on-surface-variant" placeholder="Search..." type="text"/>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container-highest transition-colors duration-150 cursor-pointer">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="notifications" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-highest transition-colors duration-150 cursor-pointer">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="settings" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant/30 ml-sm cursor-pointer">
+<img alt="Dr. Clinical Lead Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a clinical lead doctor in a modern hospital setting, dramatic lighting, high contrast, blue and teal tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDvlE56Watd7ngqw92SHxj9XCV0d9eoAzVfCKWSmOzQYyn9cnoan1J7EOskTGS5HVc5kjs1v8O-sCDndhngZ4UZRYA8l1pLrGbNh9Gjb_UJlQ5iX-9Zkm3JAPOCqeKR7fPN7oNYO_47DqmHlw003b4cH_Hg-e6BqD3yfnVqSsGmCtomRn9LM5iPn19M4jvlV9yjOFJDJi3dHzOn8xPrYKlduQ3_N0-JkvCe1giBHbAgCmi8LNJsy1K8w"/>
+</div>
+</div>
+</header>
+<div class="flex pt-16 flex-1 h-screen overflow-hidden">
+<!-- SideNavBar - Only shown on wider screens if appropriate, but prompt says include it -->
+<aside class="bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant/20 shadow-lg fixed left-0 top-16 h-[calc(100vh-64px)] hidden md:flex flex-col justify-between py-md w-64 z-40">
+<div>
+<div class="px-md pb-margin mb-md border-b border-outline-variant/20">
+<div class="flex items-center gap-md mb-xs">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center overflow-hidden border card-border">
+<img alt="Patient Status" class="w-full h-full object-cover" data-alt="Abstract representation of patient monitoring data, sine waves, clinical blue and glowing cyan colors, dark background, sharp lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0LTwvtnV3RJowqQ8nGnEIawU78gUc_x1HT6c6nJobH-_CLH3Z5TfvK3MLQSssQSB637UvC3pc-h_oC1RPLaL-rwhMnjSlVpVERBhbp-8nu1ZrmF-a7IMHBcdyAGLWDTmIN9G2B3_nIicyIRASbWQioyLKkOiJUeJaEr_WS4g4wNlvXo33EiDAe6iLp4AeOLgiyVT1tX2VwmDKLCJrRW4OQpaEbG1D958lTVMfYmj7tNIWquz0xQ_YhA"/>
+</div>
+<div>
+<h2 class="font-panel-title text-panel-title text-on-surface">Ward 4B - Bed 12</h2>
+<p class="font-data-label text-data-label text-on-surface-variant">Active Monitoring</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-xs px-sm">
+<a class="flex items-center gap-md text-on-surface-variant p-md hover:bg-surface-container-highest transition-all duration-150 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="monitor_heart" style="font-variation-settings: 'FILL' 0;">monitor_heart</span>
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim">Live Telemetry</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant p-md hover:bg-surface-container-highest transition-all duration-150 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up" style="font-variation-settings: 'FILL' 0;">trending_up</span>
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim">Risk Trends</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant p-md hover:bg-surface-container-highest transition-all duration-150 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="description" style="font-variation-settings: 'FILL' 0;">description</span>
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim">Clinical Notes</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant p-md hover:bg-surface-container-highest transition-all duration-150 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services" style="font-variation-settings: 'FILL' 0;">medical_services</span>
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim">Interventions</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant p-md hover:bg-surface-container-highest transition-all duration-150 hover:translate-x-1 rounded-lg mb-sm" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 0;">history</span>
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim">History</span>
+</a>
+<div class="px-sm mt-sm">
+<button class="w-full bg-error/10 hover:bg-error/20 text-error border border-error/30 py-2 rounded-lg font-panel-title text-panel-title transition-colors">End Monitoring</button>
+</div>
+</nav>
+</div>
+<div class="px-sm flex flex-col gap-xs border-t border-outline-variant/20 pt-md mt-auto">
+<a class="flex items-center gap-md text-on-surface-variant p-md hover:bg-surface-container-highest transition-all duration-150 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim">Support</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant p-md hover:bg-surface-container-highest transition-all duration-150 hover:translate-x-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout" style="font-variation-settings: 'FILL' 0;">logout</span>
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim">Log Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-64 overflow-y-auto pb-24 relative">
+<div class="max-w-5xl mx-auto px-margin py-xl flex flex-col gap-lg">
+<!-- Page Header & Progress -->
+<div class="mb-md">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-sm">Offline Analysis Configuration</h1>
+<p class="text-on-surface-variant">Upload historical telemetry data for retrospective guideline analysis.</p>
+</div>
+<div class="flex items-center justify-between w-full max-w-2xl mb-lg">
+<div class="flex flex-col items-center gap-2 relative z-10 w-1/3">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-panel-title text-panel-title shadow-[0_0_15px_rgba(166,200,255,0.4)]">1</div>
+<span class="font-data-label text-data-label text-primary">Upload</span>
+</div>
+<div class="flex-1 h-px bg-outline-variant/50 -mx-4 z-0 relative top-[-10px]"></div>
+<div class="flex flex-col items-center gap-2 relative z-10 w-1/3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/50 text-on-surface-variant flex items-center justify-center font-panel-title text-panel-title">2</div>
+<span class="font-data-label text-data-label text-on-surface-variant">Configure</span>
+</div>
+<div class="flex-1 h-px bg-outline-variant/50 -mx-4 z-0 relative top-[-10px]"></div>
+<div class="flex flex-col items-center gap-2 relative z-10 w-1/3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/50 text-on-surface-variant flex items-center justify-center font-panel-title text-panel-title">3</div>
+<span class="font-data-label text-data-label text-on-surface-variant">Results</span>
+</div>
+</div>
+<!-- Bento Grid Layout for Config -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Left Column: Upload (Spans 2 cols) -->
+<div class="lg:col-span-2 flex flex-col gap-gutter">
+<!-- Format Selection Card -->
+<div class="bg-surface card-border rounded-xl p-lg glass-panel shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+<h3 class="font-panel-title text-panel-title text-[#8BA4B8] mb-md uppercase tracking-wider">File Format</h3>
+<div class="flex flex-wrap gap-sm">
+<button class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-data-label text-data-label border border-primary/50 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-secondary">
+                                    WFDB (.DAT + .HEA)
+                                </button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant border border-outline-variant/30 font-data-label text-data-label hover:bg-surface-variant transition-all focus:outline-none focus:ring-2 focus:ring-secondary">
+                                    .DAT Only
+                                </button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low text-outline border border-outline-variant/20 font-data-label text-data-label opacity-70 cursor-not-allowed">
+                                    CSV <span class="text-[9px] ml-1 bg-surface-variant px-1 rounded text-outline-variant">Coming Soon</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low text-outline border border-outline-variant/20 font-data-label text-data-label opacity-70 cursor-not-allowed">
+                                    XML <span class="text-[9px] ml-1 bg-surface-variant px-1 rounded text-outline-variant">Coming Soon</span>
+</button>
+</div>
+</div>
+<!-- Drop Zones Card -->
+<div class="bg-surface card-border rounded-xl p-lg glass-panel shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex flex-col">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-panel-title text-panel-title text-[#8BA4B8] uppercase tracking-wider">Upload Files</h3>
+<span class="font-data-label text-data-label text-on-surface-variant">Required pair for WFDB</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md flex-1">
+<!-- .DAT Success Zone -->
+<div class="border-2 border-secondary/50 border-solid bg-secondary-container/20 rounded-lg p-md flex flex-col items-center justify-center text-center relative overflow-hidden transition-all group">
+<div class="absolute top-2 right-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-4xl mb-sm" style="font-variation-settings: 'FILL' 0;">dataset</span>
+<p class="font-body-md text-body-md text-on-surface mb-xs truncate w-full px-4">recording_001.dat</p>
+<p class="font-numeric-sm text-numeric-sm text-secondary-fixed-dim">12.4 MB</p>
+<div class="mt-sm flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-xs text-error hover:underline focus:outline-none focus:ring-2 focus:ring-secondary rounded px-1">Remove</button>
+</div>
+</div>
+<!-- .HEA Empty Zone -->
+<div class="border-2 border-outline-variant/40 border-dashed bg-surface-container-lowest rounded-lg p-md flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary/50 hover:bg-surface-container-low transition-all focus:outline-none focus:ring-2 focus:ring-secondary" tabindex="0">
+<span class="material-symbols-outlined text-outline-variant text-4xl mb-sm" style="font-variation-settings: 'FILL' 0;">upload_file</span>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xs">Drag &amp; drop .HEA file</p>
+<p class="font-data-label text-data-label text-outline">or click to browse</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Settings (Spans 1 col) -->
+<div class="flex flex-col gap-gutter">
+<!-- Analysis Settings Card -->
+<div class="bg-surface card-border rounded-xl p-lg glass-panel shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+<h3 class="font-panel-title text-panel-title text-[#8BA4B8] mb-md uppercase tracking-wider">Analysis Settings</h3>
+<div class="flex flex-col gap-md">
+<div>
+<label class="block font-data-label text-data-label text-on-surface-variant mb-xs">Guideline Standard</label>
+<div class="relative">
+<select class="w-full bg-surface-container-highest border border-dashed border-[#99e1d966] rounded-md py-2 px-3 text-body-md text-on-surface appearance-none focus:border-solid focus:border-secondary focus:ring-0 focus:shadow-[0_0_0_3px_rgba(148,208,220,0.3)] transition-all outline-none">
+<option selected="" value="figo2015">FIGO 2015</option>
+<option value="nice2017">NICE 2017</option>
+<option value="acog2009">ACOG 2009</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none" style="font-variation-settings: 'FILL' 0;">arrow_drop_down</span>
+</div>
+</div>
+<div>
+<label class="block font-data-label text-data-label text-on-surface-variant mb-xs">Report Language</label>
+<div class="relative">
+<select class="w-full bg-surface-container-highest border border-dashed border-[#99e1d966] rounded-md py-2 px-3 text-body-md text-on-surface appearance-none focus:border-solid focus:border-secondary focus:ring-0 focus:shadow-[0_0_0_3px_rgba(148,208,220,0.3)] transition-all outline-none">
+<option selected="" value="en">English (UK)</option>
+<option value="en-us">English (US)</option>
+<option value="es">Spanish</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none" style="font-variation-settings: 'FILL' 0;">arrow_drop_down</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Patient Information Card (Full Width) -->
+<div class="bg-surface card-border rounded-xl glass-panel shadow-[0_4px_20px_rgba(0,0,0,0.3)] overflow-hidden">
+<!-- Accordion Header -->
+<div class="p-4 border-b border-outline-variant/20 flex justify-between items-center cursor-pointer hover:bg-surface-container-low transition-colors" tabindex="0">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 0;">person</span>
+<h3 class="font-panel-title text-panel-title text-on-surface uppercase tracking-wider">Patient Information</h3>
+</div>
+<span class="material-symbols-outlined text-outline-variant transition-transform duration-200 rotate-180" style="font-variation-settings: 'FILL' 0;">expand_more</span>
+</div>
+<!-- Accordion Body (Expanded) -->
+<div class="p-lg bg-surface-container-lowest/50">
+<div class="flex justify-between items-center mb-md pb-md border-b border-outline-variant/10">
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">Metadata for final report generation.</span>
+<label class="flex items-center gap-2 cursor-pointer">
+<span class="font-data-label text-data-label text-on-surface">Keep Anonymous</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-surface border-2 border-outline-variant appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:ring-offset-1 focus:ring-offset-surface z-10 transition-transform duration-200" id="toggle1" name="toggle" style="transform: translateX(100%); border-color: transparent;" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-primary-container cursor-pointer" for="toggle1"></label>
+</div>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md opacity-50 pointer-events-none"> <!-- Disabled state visually applied due to Keep Anonymous -->
+<div>
+<label class="block font-data-label text-data-label text-on-surface-variant mb-xs">Patient ID</label>
+<input class="w-full bg-surface-container border border-dashed border-[#99e1d966] rounded-md py-2 px-3 text-body-md font-numeric-sm text-outline-variant focus:border-solid focus:border-secondary focus:ring-0 focus:shadow-[0_0_0_3px_rgba(148,208,220,0.3)] transition-all outline-none" disabled="" type="text" value="ANON_8392"/>
+</div>
+<div>
+<label class="block font-data-label text-data-label text-on-surface-variant mb-xs">Patient Name</label>
+<input class="w-full bg-surface-container border border-dashed border-[#99e1d966] rounded-md py-2 px-3 text-body-md text-on-surface focus:border-solid focus:border-secondary focus:ring-0 focus:shadow-[0_0_0_3px_rgba(148,208,220,0.3)] transition-all outline-none placeholder:text-outline-variant" disabled="" placeholder="Enter name" type="text"/>
+</div>
+<div>
+<label class="block font-data-label text-data-label text-on-surface-variant mb-xs">Gestational Age</label>
+<input class="w-full bg-surface-container-highest border border-dashed border-[#99e1d966] rounded-md py-2 px-3 text-body-md text-on-surface focus:border-solid focus:border-secondary focus:ring-0 focus:shadow-[0_0_0_3px_rgba(148,208,220,0.3)] transition-all outline-none pointer-events-auto opacity-100" type="text" value="38w 2d"/> <!-- Kept active as it's clinical data -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Action Bar (Fixed Bottom) -->
+<div class="fixed bottom-0 left-0 md:left-64 right-0 bg-surface-container-high/90 backdrop-blur-xl border-t border-outline-variant/30 p-md z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
+<div class="max-w-5xl mx-auto flex justify-between items-center">
+<button class="px-6 py-2 rounded-lg font-panel-title text-panel-title text-on-surface-variant hover:bg-surface-variant transition-colors focus:outline-none focus:ring-2 focus:ring-secondary">
+                    Cancel
+                </button>
+<button class="px-6 py-2 rounded-lg font-panel-title text-panel-title bg-primary text-on-primary hover:bg-primary-fixed transition-colors shadow-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                    Analyze Recording
+                </button>
+</div>
+</div>
+</div>
+</body></html>

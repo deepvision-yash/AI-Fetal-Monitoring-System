@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CTG Assistant - Offline Analysis Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary": "#94d0dc",
+                        "on-secondary": "#00363d",
+                        "secondary-container": "#004f59",
+                        "primary-fixed": "#d5e3ff",
+                        "on-primary-fixed": "#001c3b",
+                        "surface": "#001523",
+                        "error-container": "#93000a",
+                        "outline-variant": "#424751",
+                        "surface-container-high": "#132c3d",
+                        "on-tertiary": "#003733",
+                        "on-primary-fixed-variant": "#004786",
+                        "tertiary-fixed-dim": "#8cd3cc",
+                        "surface-container-low": "#021e2d",
+                        "on-background": "#cce6fb",
+                        "surface-container-lowest": "#00101b",
+                        "tertiary-container": "#12645e",
+                        "inverse-on-surface": "#1a3343",
+                        "primary": "#a6c8ff",
+                        "primary-container": "#035aa7",
+                        "surface-tint": "#a6c8ff",
+                        "surface-variant": "#1f3748",
+                        "inverse-surface": "#cce6fb",
+                        "primary-fixed-dim": "#a6c8ff",
+                        "on-surface": "#cce6fb",
+                        "surface-dim": "#001523",
+                        "outline": "#8c919c",
+                        "surface-container-highest": "#1f3748",
+                        "secondary-fixed": "#b0edf9",
+                        "on-primary-container": "#b8d3ff",
+                        "surface-container": "#062232",
+                        "on-tertiary-fixed-variant": "#00504b",
+                        "on-surface-variant": "#c2c6d3",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#94d0dc",
+                        "inverse-primary": "#115fac",
+                        "tertiary": "#8cd3cc",
+                        "tertiary-fixed": "#a7f0e8",
+                        "on-secondary-fixed-variant": "#004f59",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#96ded6",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#00201e",
+                        "surface-bright": "#233c4d",
+                        "background": "#001523",
+                        "on-secondary-fixed": "#001f24",
+                        "on-primary": "#00315f",
+                        "on-secondary-container": "#83bfca"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "lg": "20px",
+                        "margin": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "xl": "32px"
+                    },
+                    fontFamily: {
+                        "data-label": ["Inter"],
+                        "numeric-xl": ["JetBrains Mono"],
+                        "headline-lg": ["IBM Plex Sans"],
+                        "numeric-sm": ["JetBrains Mono"],
+                        "live-indicator": ["IBM Plex Sans"],
+                        "panel-title": ["IBM Plex Sans"],
+                        "body-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "data-label": ["11px", { lineHeight: "14px", fontWeight: "500" }],
+                        "numeric-xl": ["28px", { lineHeight: "32px", fontWeight: "700" }],
+                        "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "normal", fontWeight: "700" }],
+                        "numeric-sm": ["10px", { lineHeight: "12px", fontWeight: "400" }],
+                        "live-indicator": ["11px", { lineHeight: "11px", letterSpacing: "0.15em", fontWeight: "700" }],
+                        "panel-title": ["12px", { lineHeight: "16px", letterSpacing: "0.08em", fontWeight: "600" }],
+                        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }]
+                    },
+                    backgroundImage: {
+                        'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: theme('colors.surface-container-low');
+            border: 1px solid rgba(176,237,249,0.15);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(139, 164, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 164, 184, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .trace-path-fhr { stroke: #B0EDF9; fill: none; stroke-width: 1.5; stroke-linejoin: round; }
+        .trace-path-uc { stroke: #FFB909; fill: none; stroke-width: 1.5; stroke-linejoin: round; }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant');
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen w-screen overflow-hidden flex flex-col font-data-label select-none">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface-container-high border-b border-outline-variant/30 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-6 h-full">
+<span class="font-headline-lg text-headline-lg text-primary-fixed-dim tracking-tight">CTG Assistant</span>
+<div class="flex items-center gap-6 h-full ml-4">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 flex items-center gap-2" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 flex items-center gap-2" href="#">Patient List</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 h-full flex items-center gap-2 mt-1" href="#">Protocol Library</a>
+</div>
+</div>
+<div class="flex-1 flex justify-center items-center gap-4">
+<div class="flex items-center gap-2 bg-[rgba(255,185,9,0.1)] border border-[#FFB909] text-[#FFB909] px-3 py-1 rounded-full text-[11px] font-bold tracking-wider">
+                OFFLINE ANALYSIS
+            </div>
+<div class="flex items-center gap-3">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #B0EDF9;">Recording: Jan 15 2024 — 10:30 to 12:15 (1h 45min)</span>
+<div class="flex items-center gap-1.5 bg-surface-container py-1 px-3 rounded-full border border-[rgba(153,225,217,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-[#99E1D9]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span style="font-family: 'Inter', sans-serif; font-size: 12px; color: #99E1D9;">Processed ✓</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clinical avatar showing a female doctor with dark hair tied back, wearing light blue scrubs and a stethoscope around her neck, set against a dark teal clinical backdrop with soft, professional lighting. Focus on modern, high-quality rendering suitable for a premium medical application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtEWMmYoLSYW7OmJ8xIk_g9LUQrORn9P5n6vWeEU89hZB22vw3STcGnaoA_aMwWgttSMj5kFv72jNaCduT36L2VYLwFy7sujtdWhrILM0VbAuvRtfS3jMR28JHD8L7c_Eew9yqgA-3_HG6O9Ir9CW0E1gUiT6FzRjDjhbGXO-mxMrqQd9HdXwVW7F-hUB28ekeubWTWwkn05Kc_S7zLran56KkoE7fM0CgCaZ8xXTq10aAKc9GPp6tTQ"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Suppressed as per logic for contextual analysis view, but keeping structural space) -->
+<!-- Main Content Canvas -->
+<main class="flex-1 flex mt-16 p-gutter gap-gutter overflow-hidden h-[calc(100vh-64px)]">
+<!-- Left Column (74%) -->
+<div class="w-[74%] flex flex-col gap-gutter h-full">
+<!-- FHR Graph Panel -->
+<div class="glass-panel rounded-lg flex flex-col flex-1 relative overflow-hidden">
+<div class="px-lg py-sm border-b border-[rgba(176,237,249,0.1)] flex justify-between items-center bg-surface-container/50">
+<span class="font-panel-title text-panel-title text-[#8BA4B8]">FETAL HEART RATE (BPM)</span>
+<div class="flex items-center gap-4 text-xs text-on-surface-variant">
+<div class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-[#10B981]"></div>Normal</div>
+<div class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-[#F59E0B]"></div>Concern</div>
+<div class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-[#EF4444]"></div>Critical</div>
+</div>
+</div>
+<div class="flex-1 relative bg-surface-container-lowest grid-bg overflow-x-auto overflow-y-hidden custom-scrollbar">
+<div class="absolute left-0 top-0 bottom-0 w-8 bg-surface-container-low border-r border-[rgba(176,237,249,0.1)] flex flex-col justify-between py-4 z-10 text-[10px] text-[#8BA4B8] text-right pr-1 font-numeric-sm font-bold bg-opacity-90 backdrop-blur-sm">
+<span>200</span>
+<span>180</span>
+<span>160</span>
+<span>140</span>
+<span>120</span>
+<span>100</span>
+<span>80</span>
+<span>60</span>
+</div>
+<div class="h-full min-w-[200%] pl-8 relative">
+<!-- FHR SVG Trace Placeholder -->
+<svg class="absolute top-0 left-0 pl-8 pt-4 pb-4" height="80%" preserveaspectratio="none" width="100%">
+<!-- Baseline normal -->
+<path class="trace-path-fhr" d="M0,50 Q10,48 20,52 T40,49 T60,51 T80,48 T100,50 T120,49 T140,51 T160,48 T180,50 T200,49 T220,51 T240,48 T260,50 T280,49 T300,51 T320,48 T340,50 T360,49 T380,51 T400,48 T420,50"></path>
+<!-- Accel -->
+<path class="trace-path-fhr" d="M420,50 Q430,30 440,20 T460,15 T480,25 T500,48"></path>
+<!-- Normal -->
+<path class="trace-path-fhr" d="M500,48 Q520,50 540,49 T560,51 T580,48 T600,50"></path>
+<!-- Var Decel -->
+<path class="trace-path-fhr" d="M600,50 Q610,70 620,90 T630,95 T640,80 T660,50"></path>
+<!-- Flatter trace (reduced variability) -->
+<path class="trace-path-fhr" d="M660,50 Q680,50 700,51 T720,50 T740,49 T760,50 T780,51 T800,50 T820,49"></path>
+<!-- Late Decel 1 -->
+<path class="trace-path-fhr" d="M820,49 Q840,60 850,75 T860,85 T880,60 T900,50"></path>
+<!-- Flatter -->
+<path class="trace-path-fhr" d="M900,50 Q920,50 940,51 T960,50 T980,49"></path>
+<!-- Late Decel 2 -->
+<path class="trace-path-fhr" d="M980,49 Q990,60 1000,70 T1010,80 T1030,60 T1050,50"></path>
+<!-- Flatter -->
+<path class="trace-path-fhr" d="M1050,50 Q1070,51 1090,50 T1110,49"></path>
+<!-- Late Decel 3 -->
+<path class="trace-path-fhr" d="M1110,49 Q1130,65 1140,80 T1150,90 T1170,70 T1190,55"></path>
+</svg>
+<!-- Annotations -->
+<div class="absolute top-[20%] left-[22%] flex flex-col items-center">
+<span class="material-symbols-outlined text-[#10B981] text-[16px]">arrow_drop_up</span>
+</div>
+<div class="absolute top-[60%] left-[32%] flex flex-col items-center">
+<span class="material-symbols-outlined text-[#F59E0B] text-[16px]">arrow_drop_down</span>
+</div>
+<div class="absolute top-[60%] left-[44%] flex flex-col items-center">
+<span class="material-symbols-outlined text-[#EF4444] text-[16px]">arrow_drop_down</span>
+</div>
+<div class="absolute top-[60%] left-[52%] flex flex-col items-center">
+<span class="material-symbols-outlined text-[#EF4444] text-[16px]">arrow_drop_down</span>
+</div>
+<div class="absolute top-[60%] left-[60%] flex flex-col items-center">
+<span class="material-symbols-outlined text-[#EF4444] text-[16px]">arrow_drop_down</span>
+</div>
+<!-- Annotation Lane -->
+<div class="absolute bottom-6 left-8 right-0 h-4 flex text-[8px] font-bold text-surface-container-lowest leading-none text-center items-center">
+<div class="h-full bg-[#10B981] flex-grow-[3] rounded-l-sm" style="width: 25%;">Normal</div>
+<div class="h-full bg-[#059669] flex-grow-[1]" style="width: 10%;">Accel</div>
+<div class="h-full bg-[#F59E0B] flex-grow-[1]" style="width: 10%;">Var Decel</div>
+<div class="h-full bg-[#D97706] flex-grow-[3]" style="width: 30%;">Minimal Variab.</div>
+<div class="h-full bg-[#EF4444] flex-grow-[2] rounded-r-sm" style="width: 25%;">Late Decels x3</div>
+</div>
+<!-- X-Axis Marks -->
+<div class="absolute bottom-0 left-8 right-0 h-6 border-t border-[rgba(176,237,249,0.1)] flex justify-between text-[10px] text-[#8BA4B8] px-2 pt-1 font-numeric-sm">
+<span>10:30</span><span>10:40</span><span>10:50</span><span>11:00</span><span>11:10</span><span>11:20</span><span>11:30</span><span>11:40</span><span>11:50</span><span>12:00</span><span>12:10</span>
+</div>
+</div>
+</div>
+</div>
+<!-- UC Graph Panel -->
+<div class="glass-panel rounded-lg flex flex-col h-[160px] relative overflow-hidden">
+<div class="px-lg py-[4px] border-b border-[rgba(176,237,249,0.1)] flex justify-between items-center bg-surface-container/50">
+<span class="font-panel-title text-panel-title text-[#8BA4B8]">UTERINE CONTRACTIONS (mmHg)</span>
+</div>
+<div class="flex-1 relative bg-surface-container-lowest grid-bg overflow-x-auto overflow-y-hidden custom-scrollbar">
+<div class="absolute left-0 top-0 bottom-0 w-8 bg-surface-container-low border-r border-[rgba(176,237,249,0.1)] flex flex-col justify-between py-2 z-10 text-[10px] text-[#8BA4B8] text-right pr-1 font-numeric-sm font-bold bg-opacity-90 backdrop-blur-sm">
+<span>100</span>
+<span>50</span>
+<span>0</span>
+</div>
+<div class="h-full min-w-[200%] pl-8 relative">
+<!-- UC SVG Trace Placeholder -->
+<svg class="absolute top-0 left-0 pl-8 pt-4 pb-2" height="80%" preserveaspectratio="none" width="100%">
+<path class="trace-path-uc" d="M0,90 L50,90 Q70,90 90,40 T130,40 Q150,90 170,90 L300,90 Q320,90 340,30 T380,30 Q400,90 420,90 L550,90 Q570,90 590,50 T630,50 Q650,90 670,90 L750,90 Q770,90 790,30 T830,30 Q850,90 870,90 L950,90 Q970,90 990,40 T1030,40 Q1050,90 1070,90 L1150,90 Q1170,90 1190,40 T1230,40"></path>
+</svg>
+<!-- Contraction Labels -->
+<div class="absolute top-2 w-full h-full text-[10px] text-[#FFB909] font-bold font-numeric-sm opacity-70">
+<span class="absolute" style="left: 5%;">C1</span>
+<span class="absolute" style="left: 17%;">C2</span>
+<span class="absolute" style="left: 30%;">C3</span>
+<span class="absolute" style="left: 40%;">C4</span>
+<span class="absolute" style="left: 50%;">C5</span>
+<span class="absolute" style="left: 60%;">C6</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recording Scrubber -->
+<div class="w-full h-10 flex items-center gap-4 px-4 glass-panel rounded-lg">
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer"><span class="material-symbols-outlined text-[16px]">skip_previous</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer"><span class="material-symbols-outlined text-[16px]">play_arrow</span></button>
+</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #8BA4B8;">10:30</span>
+<div class="flex-1 relative h-6 flex items-center group cursor-pointer">
+<div class="absolute top-[-16px] w-full text-center" style="font-family: 'Inter', sans-serif; font-size: 11px; color: #B0EDF9; z-index: 20;">Viewing: 10:30 – 11:10</div>
+<div class="w-full h-2 rounded bg-white/10 relative overflow-hidden flex">
+<!-- Heatmap -->
+<div class="h-full bg-[rgba(153,225,217,0.4)]" style="width: 30%;"></div>
+<div class="h-full bg-[rgba(255,185,9,0.4)]" style="width: 15%;"></div>
+<div class="h-full bg-[rgba(255,91,6,0.5)]" style="width: 25%;"></div>
+<div class="h-full bg-[rgba(229,62,62,0.5)]" style="width: 30%;"></div>
+</div>
+<!-- Viewport Highlight -->
+<div class="absolute h-4 top-1 border border-primary/50 bg-primary/20 rounded-sm pointer-events-none" style="left: 10%; width: 25%;"></div>
+<!-- Scrubber Handle -->
+<div class="absolute w-4 h-4 rounded-full bg-[#B0EDF9] shadow-md top-1 -ml-2 cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" style="left: 22%;"></div>
+</div>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #8BA4B8;">12:15</span>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer"><span class="material-symbols-outlined text-[16px]">zoom_in</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer"><span class="material-symbols-outlined text-[16px]">zoom_out</span></button>
+</div>
+</div>
+<!-- Pattern Cards & AI Analysis Row -->
+<div class="flex gap-gutter h-[140px]">
+<!-- Pattern Cards Grid -->
+<div class="grid grid-cols-2 grid-rows-2 gap-sm w-1/2">
+<div class="glass-panel rounded-md p-3 flex flex-col justify-center border-l-2 border-l-[#10B981]">
+<span class="font-panel-title text-[10px] text-[#8BA4B8] uppercase tracking-wider mb-1">Baseline</span>
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-xl text-[20px] text-[#B0EDF9]">139 <span class="text-[12px] font-normal">bpm avg</span></span>
+<span class="text-[#10B981] text-[10px] font-bold">NORMAL</span>
+</div>
+</div>
+<div class="glass-panel rounded-md p-3 flex flex-col justify-center border-l-2 border-l-[#F59E0B] bg-[rgba(245,158,11,0.05)]">
+<span class="font-panel-title text-[10px] text-[#8BA4B8] uppercase tracking-wider mb-1">Variability</span>
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-xl text-[20px] text-[#F59E0B]">&lt; 5 <span class="text-[12px] font-normal">bpm (35m)</span></span>
+</div>
+</div>
+<div class="glass-panel rounded-md p-3 flex flex-col justify-center border-l-2 border-l-[#10B981]">
+<span class="font-panel-title text-[10px] text-[#8BA4B8] uppercase tracking-wider mb-1">Accelerations</span>
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-xl text-[20px] text-[#B0EDF9]">2 <span class="text-[12px] font-normal">detected</span></span>
+</div>
+</div>
+<div class="glass-panel rounded-md p-3 flex flex-col justify-center border-l-2 border-l-[#EF4444] bg-[rgba(239,68,68,0.05)]">
+<span class="font-panel-title text-[10px] text-[#8BA4B8] uppercase tracking-wider mb-1">Decelerations</span>
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-xl text-[18px] text-[#EF4444]">3 late, 1 var</span>
+</div>
+</div>
+</div>
+<!-- AI Analysis Panel -->
+<div class="glass-panel rounded-md p-4 w-1/2 flex flex-col justify-between border-t-2 border-t-primary/50 relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[100px]">auto_awesome</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-2">
+<div class="bg-[rgba(245,158,11,0.15)] text-[#F59E0B] border border-[#F59E0B]/30 px-2 py-0.5 rounded text-[10px] font-bold tracking-wide">
+                                Category II / III Pattern Evolution
+                            </div>
+<span class="text-[#8BA4B8] text-[10px]">Conf: 89%</span>
+</div>
+<p class="font-body-md text-[12px] text-on-surface-variant leading-relaxed">
+                            Full recording analysis complete (1h 45min). Initially reactive CTG with accelerations. Progressive variability decline after 11:30. Three late decelerations in final 25 minutes — pattern evolution from Category I to Category III over the recording period.
+                        </p>
+</div>
+<div class="text-[10px] text-primary/80 mt-2 font-medium">
+                        ✦ 47 features detected across full recording
+                    </div>
+</div>
+</div>
+</div>
+<!-- Right Column (26%) -->
+<div class="w-[26%] flex flex-col gap-gutter h-full">
+<!-- Risk Gauge Panel -->
+<div class="glass-panel rounded-lg p-lg flex flex-col items-center justify-center min-h-[240px]">
+<span class="font-panel-title text-panel-title text-[#8BA4B8] self-start w-full mb-4">FINAL RECORDING RISK</span>
+<div class="relative w-[170px] h-[170px] flex items-center justify-center">
+<!-- Gauge SVG (Simplified representation) -->
+<svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="40" stroke="rgba(255,255,255,0.05)" stroke-width="12"></circle>
+<!-- Safe -->
+<circle cx="50" cy="50" fill="none" r="40" stroke="#10B981" stroke-dasharray="62.8 188.4" stroke-dashoffset="0" stroke-width="12"></circle>
+<!-- Watch -->
+<circle cx="50" cy="50" fill="none" r="40" stroke="#F59E0B" stroke-dasharray="62.8 188.4" stroke-dashoffset="-62.8" stroke-width="12"></circle>
+<!-- Urgent / Critical (where the score lands) -->
+<circle class="opacity-80" cx="50" cy="50" fill="none" r="40" stroke="#EF4444" stroke-dasharray="100.4 150.8" stroke-dashoffset="-125.6" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-surface/50 m-5 shadow-inner border border-white/5 backdrop-blur-sm">
+<span class="font-numeric-xl text-[48px] leading-none text-[#EF4444]">68</span>
+<span class="text-[10px] text-on-surface-variant mt-1 uppercase tracking-wider">Score</span>
+</div>
+</div>
+</div>
+<!-- Analysis Report Section -->
+<div class="glass-panel rounded-lg flex flex-col flex-1">
+<div class="px-lg py-sm border-b border-[rgba(176,237,249,0.1)] flex justify-between items-center bg-surface-container/50">
+<span class="font-panel-title text-panel-title text-[#8BA4B8]">ANALYSIS REPORT</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">summarize</span>
+</div>
+<div class="p-lg flex flex-col gap-4">
+<div class="bg-surface-container rounded-md p-3 border border-[rgba(153,225,217,0.2)]">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[18px] text-[#99E1D9]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-medium text-[#99E1D9]">Status: Ready</span>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-white/10">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant">Generated</span>
+<span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #8BA4B8;">14:22:31</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant">Scope</span>
+<span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #8BA4B8;">47 patterns detected</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 mt-2">
+<button class="w-full bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary py-3 rounded-md font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                            Download PDF Report
+                        </button>
+<button class="w-full bg-transparent border border-outline-variant text-primary py-2 rounded-md font-medium hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">share</span>
+                            Share with Team
+                        </button>
+<button class="w-full bg-transparent text-on-surface-variant py-2 rounded-md text-[12px] font-medium hover:text-primary transition-colors flex items-center justify-center gap-2 mt-2">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                            Export CSV Data
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Status Bar -->
+<div class="fixed bottom-0 left-0 w-full h-8 bg-surface-container-low border-t border-[rgba(176,237,249,0.1)] flex justify-between items-center px-lg z-50 text-[11px] backdrop-blur-md">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">done_all</span> Analysis Complete — 47 patterns detected in 1h 45min recording</span>
+<span class="border-l border-white/10 pl-4" style="font-family: 'Inter', sans-serif; font-size: 11px; color: #8BA4B8;">Processing time: 41 seconds</span>
+</div>
+<div class="flex items-center gap-1 text-[#99E1D9] font-medium bg-[rgba(153,225,217,0.1)] px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]">fitbit_elliptical</span>
+            Report Ready
+        </div>
+</div>
+</body></html>

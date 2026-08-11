@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Select Input Mode - CTG Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#1f3748",
+                    "on-secondary-fixed-variant": "#004f59",
+                    "primary": "#a6c8ff",
+                    "on-tertiary-fixed-variant": "#00504b",
+                    "inverse-surface": "#cce6fb",
+                    "on-error": "#690005",
+                    "outline": "#8c919c",
+                    "inverse-primary": "#115fac",
+                    "primary-container": "#035aa7",
+                    "error-container": "#93000a",
+                    "on-primary": "#00315f",
+                    "on-tertiary": "#003733",
+                    "primary-fixed": "#d5e3ff",
+                    "surface": "#001523",
+                    "tertiary-fixed-dim": "#8cd3cc",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed-dim": "#a6c8ff",
+                    "outline-variant": "#424751",
+                    "on-surface": "#cce6fb",
+                    "secondary-container": "#004f59",
+                    "surface-dim": "#001523",
+                    "secondary": "#94d0dc",
+                    "surface-container": "#062232",
+                    "surface-container-lowest": "#00101b",
+                    "tertiary-container": "#12645e",
+                    "secondary-fixed": "#b0edf9",
+                    "surface-variant": "#1f3748",
+                    "surface-tint": "#a6c8ff",
+                    "background": "#001523",
+                    "on-tertiary-fixed": "#00201e",
+                    "secondary-fixed-dim": "#94d0dc",
+                    "on-secondary-fixed": "#001f24",
+                    "on-tertiary-container": "#96ded6",
+                    "tertiary": "#8cd3cc",
+                    "on-secondary-container": "#83bfca",
+                    "tertiary-fixed": "#a7f0e8",
+                    "surface-container-high": "#132c3d",
+                    "on-primary-fixed-variant": "#004786",
+                    "on-primary-fixed": "#001c3b",
+                    "surface-bright": "#233c4d",
+                    "surface-container-low": "#021e2d",
+                    "on-secondary": "#00363d",
+                    "on-surface-variant": "#c2c6d3",
+                    "error": "#ffb4ab",
+                    "inverse-on-surface": "#1a3343",
+                    "on-primary-container": "#b8d3ff",
+                    "on-background": "#cce6fb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "md": "16px",
+                    "margin": "24px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "lg": "20px"
+            },
+            "fontFamily": {
+                    "numeric-xl": [
+                            "JetBrains Mono"
+                    ],
+                    "data-label": [
+                            "Inter"
+                    ],
+                    "numeric-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "panel-title": [
+                            "IBM Plex Sans"
+                    ],
+                    "headline-lg": [
+                            "IBM Plex Sans"
+                    ],
+                    "live-indicator": [
+                            "IBM Plex Sans"
+                    ]
+            },
+            "fontSize": {
+                    "numeric-xl": [
+                            "28px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "data-label": [
+                            "11px",
+                            {
+                                    "lineHeight": "14px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "numeric-sm": [
+                            "10px",
+                            {
+                                    "lineHeight": "12px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "panel-title": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.08em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "normal",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "live-indicator": [
+                            "11px",
+                            {
+                                    "lineHeight": "11px",
+                                    "letterSpacing": "0.15em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(2, 30, 45, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glow-border:focus-within {
+            border-color: #94d0dc;
+            box-shadow: 0 0 0 3px rgba(148, 208, 220, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-surface-container text-on-surface font-body-md min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar -->
+<header class="bg-surface-container-high dark:bg-surface-container-high shadow-sm fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 border-b border-outline-variant/30 backdrop-blur-md">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-secondary text-2xl">monitor_heart</span>
+<span class="font-headline-lg text-headline-lg text-primary-fixed-dim tracking-tight">CTG Assistant</span>
+<div class="w-px h-6 bg-outline-variant mx-sm"></div>
+<span class="text-on-surface-variant font-medium text-sm">Select Input Mode</span>
+</div>
+<div class="flex items-center gap-margin">
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer active:opacity-80 hover:text-primary transition-colors duration-200">notifications</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer active:opacity-80 hover:text-primary transition-colors duration-200">settings</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="text-right hidden md:block">
+<div class="font-panel-title text-panel-title text-on-surface">Dr. Clinical Lead</div>
+<div class="text-xs text-on-surface-variant">General Hospital</div>
+</div>
+<img alt="Dr. Clinical Lead Avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small, professional circular avatar portrait of a lead clinical doctor in a modern hospital setting, subtle cinematic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY3e1Fh1ly2mITBLR4jjnMDUKxB5hHUuDSGNQcxjnmlan7vGyKfJtKvExKnAEZfe9F9w0TvesFLJaoqx_fL9DIcjTep0rDoCdGTjDWAWyh_5ZQIA7ExiwwjMP0XAOwK1Lg3rGtxDeU9SE5B5wFa8AOPXr_hLawYPDBHlVKfF8kNAuNUgHtI26oYAmS-5boiLDJ8iNjfUzaivwnWGLuLuNPQa8dDVUGcXvkw5iIxCAIVFXeD7xC3Z--iA"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex items-center justify-center pt-24 pb-12 px-6">
+<div class="max-w-[960px] w-full flex flex-col gap-xl">
+<!-- Headers -->
+<div class="text-center space-y-sm">
+<h1 class="font-headline-lg text-[28px] leading-9 font-bold text-on-surface">How would you like to input CTG data?</h1>
+<p class="text-on-surface-variant text-lg">Select your input mode to begin fetal monitoring and AI analysis.</p>
+</div>
+<!-- Two Primary Mode Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-margin">
+<!-- CARD A: Live Monitor -->
+<div class="glass-card border border-outline-variant/30 rounded-xl p-lg flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-secondary/50 group">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-md">
+<div class="w-14 h-14 rounded-full bg-secondary-container flex items-center justify-center">
+<svg class="lucide lucide-activity" fill="none" height="32" stroke="#b0edf9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+</div>
+<span class="bg-tertiary-container text-on-tertiary-container font-data-label text-data-label px-2 py-1 rounded-full border border-tertiary/20">REAL-TIME</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="text-error font-live-indicator text-live-indicator tracking-widest">LIVE</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-sm">Live Monitor</h2>
+<p class="text-on-surface-variant mb-margin text-sm leading-relaxed flex-grow">Connect to a live CTG machine via real-time data stream for continuous monitoring and immediate AI pattern detection during labor.</p>
+<ul class="space-y-sm mb-margin">
+<li class="flex items-center gap-sm text-sm text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span> Real-time visualization
+                        </li>
+<li class="flex items-center gap-sm text-sm text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span> 30s pattern detection
+                        </li>
+<li class="flex items-center gap-sm text-sm text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">check_circle</span> Instant alerts
+                        </li>
+</ul>
+<button class="w-full bg-primary-container hover:bg-primary-container/90 text-on-primary-container font-panel-title text-panel-title py-3 rounded-lg transition-colors flex items-center justify-center gap-sm">
+                        Start Live Monitoring
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- CARD B: Analyze Recording -->
+<div class="glass-card border border-outline-variant/30 rounded-xl p-lg flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-outline-variant/60 group">
+<div class="flex justify-between items-start mb-md">
+<div class="w-14 h-14 rounded-full bg-surface-bright flex items-center justify-center">
+<svg class="lucide lucide-upload-cloud" fill="none" height="32" stroke="#FFB909" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+</div>
+<span class="bg-surface-bright text-[#FFB909] font-data-label text-data-label px-2 py-1 rounded-full border border-[#FFB909]/30">OFFLINE ANALYSIS</span>
+</div>
+<div class="flex items-center gap-2 mb-2 opacity-0">
+<span class="w-2 h-2"></span>
+<span class="font-live-indicator text-live-indicator">SPACER</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-sm">Analyze Recording</h2>
+<p class="text-on-surface-variant mb-margin text-sm leading-relaxed flex-grow">Upload a completed CTG recording file for full AI analysis, retrospective review, and automated clinical annotation generation.</p>
+<div class="mb-margin">
+<div class="font-panel-title text-panel-title text-outline mb-sm text-[10px]">SUPPORTED FORMATS</div>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-surface-bright text-on-surface text-xs px-2 py-1 rounded border border-outline-variant/50">.DAT + .HEA</span>
+<span class="bg-surface-bright text-on-surface text-xs px-2 py-1 rounded border border-outline-variant/50">.DAT only</span>
+<span class="bg-surface/50 text-outline text-xs px-2 py-1 rounded border border-outline-variant/30 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">lock</span> CSV</span>
+<span class="bg-surface/50 text-outline text-xs px-2 py-1 rounded border border-outline-variant/30 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">lock</span> XML</span>
+</div>
+</div>
+<button class="w-full bg-transparent border-2 border-secondary hover:bg-secondary/10 text-secondary font-panel-title text-panel-title py-3 rounded-lg transition-colors flex items-center justify-center gap-sm mt-auto">
+                        Upload &amp; Analyze
+                        <span class="material-symbols-outlined text-sm">upload</span>
+</button>
+</div>
+</div>
+<!-- Coming Soon Section -->
+<div class="mt-lg">
+<div class="flex items-center gap-sm mb-md">
+<div class="h-px bg-outline-variant flex-grow"></div>
+<span class="font-panel-title text-panel-title text-outline uppercase">Coming Soon</span>
+<div class="h-px bg-outline-variant flex-grow"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="glass-card opacity-50 border border-outline-variant/20 rounded-lg p-md flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-surface-bright flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">description</span>
+</div>
+<div>
+<div class="font-medium text-sm text-on-surface">Patient Clinical Data</div>
+<div class="text-xs text-on-surface-variant">Import EHR records</div>
+</div>
+</div>
+<div class="glass-card opacity-50 border border-outline-variant/20 rounded-lg p-md flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-surface-bright flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">account_tree</span>
+</div>
+<div>
+<div class="font-medium text-sm text-on-surface">Hospital Metadata + CTG</div>
+<div class="text-xs text-on-surface-variant">Batch demographic sync</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Security Note -->
+<div class="flex justify-center items-center gap-sm mt-xl text-outline font-data-label text-data-label">
+<span class="material-symbols-outlined text-sm">health_and_safety</span>
+                All patient data is processed locally — no data leaves your secure hospital network.
+            </div>
+</div>
+</main>
+</body></html>

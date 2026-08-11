@@ -1,0 +1,314 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-container-highest: #1f3748;
+  --color-on-secondary-fixed-variant: #004f59;
+  --color-primary: #a6c8ff;
+  --color-on-tertiary-fixed-variant: #00504b;
+  --color-inverse-surface: #cce6fb;
+  --color-on-error: #690005;
+  --color-outline: #8c919c;
+  --color-inverse-primary: #115fac;
+  --color-primary-container: #035aa7;
+  --color-error-container: #93000a;
+  --color-on-primary: #00315f;
+  --color-on-tertiary: #003733;
+  --color-primary-fixed: #d5e3ff;
+  --color-surface: #001523;
+  --color-tertiary-fixed-dim: #8cd3cc;
+  --color-on-error-container: #ffdad6;
+  --color-primary-fixed-dim: #a6c8ff;
+  --color-outline-variant: #424751;
+  --color-on-surface: #cce6fb;
+  --color-secondary-container: #004f59;
+  --color-surface-dim: #001523;
+  --color-secondary: #94d0dc;
+  --color-surface-container: #062232;
+  --color-surface-container-lowest: #00101b;
+  --color-tertiary-container: #12645e;
+  --color-secondary-fixed: #b0edf9;
+  --color-surface-variant: #1f3748;
+  --color-surface-tint: #a6c8ff;
+  --color-background: #001523;
+  --color-on-tertiary-fixed: #00201e;
+  --color-secondary-fixed-dim: #94d0dc;
+  --color-on-secondary-fixed: #001f24;
+  --color-on-tertiary-container: #96ded6;
+  --color-tertiary: #8cd3cc;
+  --color-on-secondary-container: #83bfca;
+  --color-tertiary-fixed: #a7f0e8;
+  --color-surface-container-high: #132c3d;
+  --color-on-primary-fixed-variant: #004786;
+  --color-on-primary-fixed: #001c3b;
+  --color-surface-bright: #233c4d;
+  --color-surface-container-low: #021e2d;
+  --color-on-secondary: #00363d;
+  --color-on-surface-variant: #c2c6d3;
+  --color-error: #ffb4ab;
+  --color-inverse-on-surface: #1a3343;
+  --color-on-primary-container: #b8d3ff;
+  --color-on-background: #cce6fb;
+
+  --spacing-gutter: 16px;
+  --spacing-md: 16px;
+  --spacing-margin: 24px;
+  --spacing-xl: 32px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-lg: 20px;
+
+}
+
+@utility text-numeric-xl {
+  font-family: "Space Mono", monospace;
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 700;
+}
+
+@utility text-data-label {
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@utility text-numeric-sm {
+  font-family: "Space Mono", monospace;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+@utility text-body-md {
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+@utility text-panel-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+@utility text-headline-lg {
+  font-family: "Outfit", sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  letter-spacing: normal;
+  font-weight: 700;
+}
+
+@utility text-live-indicator {
+  font-family: "Outfit", sans-serif;
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(2, 30, 45, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .glow-border:focus-within {
+    border-color: #94d0dc;
+    box-shadow: 0 0 0 3px rgba(148, 208, 220, 0.3);
+  }
+
+  .bg-dots {
+    background-color: #04344C;
+    background-image: radial-gradient(circle, rgba(140, 145, 156, 0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .card-border {
+    border: 1px solid rgba(176,237,249,0.15);
+  }
+
+  .glass-panel {
+    background-color: rgba(0, 21, 35, 0.6);
+    backdrop-filter: blur(12px);
+  }
+
+  .draw-waveform {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw 4s linear infinite;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .spin-slow {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .progress-bar-fill {
+    background: linear-gradient(to right, #035AA7, #99E1D9);
+    width: 60%;
+    transition: width 0.5s ease;
+  }
+
+  .grid-bg {
+    background-image: 
+        linear-gradient(to right, rgba(139, 164, 184, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(139, 164, 184, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .trace-path-fhr { stroke: #B0EDF9; fill: none; stroke-width: 1.5; stroke-linejoin: round; }
+  .trace-path-uc { stroke: #FFB909; fill: none; stroke-width: 1.5; stroke-linejoin: round; }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-outline-variant);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-outline);
+  }
+
+  .pulse-indicator {
+    animation: pulse-red 2s infinite;
+  }
+  @keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(255, 180, 171, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 180, 171, 0); }
+  }
+  
+  .graph-bg {
+    background-image: 
+        linear-gradient(rgba(140, 145, 156, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(140, 145, 156, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .brady-tachy-zone {
+    background: linear-gradient(to bottom, rgba(255, 180, 171, 0.08) 0%, transparent 20%, transparent 80%, rgba(255, 180, 171, 0.08) 100%);
+  }
+
+  /* LIVE dot: realistic multi-ring pulse */
+  .live-dot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 8px rgba(239, 68, 68, 0.9);
+    animation: live-pulse-core 1.8s ease-in-out infinite;
+  }
+
+  .live-dot::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.2);
+    animation: live-pulse-ring1 1.8s ease-in-out infinite;
+  }
+
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.08);
+    animation: live-pulse-ring2 1.8s ease-in-out infinite 0.3s;
+  }
+
+  @keyframes live-pulse-core {
+    0%   { box-shadow: 0 0 0 0 rgba(239,68,68,0.7), 0 0 8px rgba(239,68,68,0.9); background: #ef4444; }
+    40%  { box-shadow: 0 0 0 6px rgba(239,68,68,0), 0 0 14px rgba(239,68,68,0.6); background: #f87171; }
+    100% { box-shadow: 0 0 0 0 rgba(239,68,68,0), 0 0 8px rgba(239,68,68,0.9); background: #ef4444; }
+  }
+
+  @keyframes live-pulse-ring1 {
+    0%   { transform: scale(1); opacity: 0.5; }
+    50%  { transform: scale(1.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 0.5; }
+  }
+
+  @keyframes live-pulse-ring2 {
+    0%   { transform: scale(1); opacity: 0.3; }
+    50%  { transform: scale(2.2); opacity: 0; }
+    100% { transform: scale(1); opacity: 0.3; }
+  }
+
+  /* ECG waveform animation */
+  @keyframes ecg-waveform {
+    0%   { stroke-dashoffset: 300; opacity: 0.3; }
+    30%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 0.3; }
+  }
+
+  .ecg-animate {
+    stroke-dasharray: 300;
+    stroke-dashoffset: 300;
+    animation: ecg-waveform 2s linear infinite;
+  }
+
+  /* 3-State Border Pulse Animation for Critical Alerts */
+  @keyframes alert-border-pulse {
+    0% {
+      border-bottom-color: #E53E3E;
+      box-shadow: 0 0 0 rgba(229, 62, 62, 0);
+    }
+    50% {
+      border-bottom-color: rgba(229, 62, 62, 0.4);
+      box-shadow: 0 8px 30px rgba(229, 62, 62, 0.15);
+    }
+    100% {
+      border-bottom-color: #E53E3E;
+      box-shadow: 0 0 0 rgba(229, 62, 62, 0);
+    }
+  }
+
+  .animate-alert-border {
+    animation: alert-border-pulse 2s infinite;
+  }
+}
