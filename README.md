@@ -49,6 +49,11 @@ AI Fetal Monitoring System is an advanced web application designed for the analy
 - `/backend` - Backend services and AI analysis modules (WIP)
 - `/docs` - Project documentation
 
+## Author
+
+**Yash Gharunge**
+- Email: deepvision.yash@gmail.com
+
 ## License
 
 This project is licensed under the MIT License.
